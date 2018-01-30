@@ -1,9 +1,12 @@
-import pprint
-import bottle
+import flask
 import json
+from utils.game_state import GameState
+from snakes import get_snake
+
+app = flask.Flask(__name__)
 
 
-@bottle.get('/')
+@app.route('/')
 def index():
     return """
         <a href="https://github.com/sendwithus/battlesnake-python">
@@ -12,105 +15,37 @@ def index():
     """
 
 
-@bottle.post('/start')
+@app.route('/start', methods=['GET', 'POST'])
 def start():
-    data = bottle.request.json
-    pprint.pprint(data)
+    snake = get_snake()
 
     return json.dumps({
-        'name': 'battlesnake-python',
-        'color': '#00ff00',
-        'head_url': 'http://battlesnake-python.herokuapp.com',
-        'taunt': 'battlesnake-python!'
+        'name': snake.name(),
+        'color': snake.color(),
+        'head_url': snake.head_url(),
+        'taunt': snake.taunt()
     })
 
 
-def _list_empty_squares(data):
-    width = data["width"]
-    height = data["height"]
-    empty_squares = {}
-    for x in range(0, width):
-        for y in range(0, height):
-            empty_squares[(x, y)] = True
-
-    for snake in data["snakes"]["data"]:
-        segments = snake["body"]["data"]
-        for segment in segments:
-            x = segment["x"]
-            y = segment["y"]
-            del empty_squares[(x, y)]
-
-    pprint.pprint(empty_squares)
-
-    return empty_squares
-
-
-def _vector_to_direction(v):
-    return {
-        (0, -1): "up",
-        (0, 1): "down",
-        (1, 0): "right",
-        (-1, 0): "left",
-    }[v]
-
-
-def _sub_vector(v1, v2):
-    return (v1[0]-v2[0], v1[1]-v2[1])
-
-
-def _add_vector(v1, v2):
-    return (v1[0]+v2[0], v1[1]+v2[1])
-
-
-def _my_head(data):
-    segments = data["you"]["body"]["data"]
-    p = segments[0]
-    head = (p["x"], p["y"])
-    return head
-
-
-def _my_neck(data):
-    segments = data["you"]["body"]["data"]
-    p = segments[1]
-    head = (p["x"], p["y"])
-    return head
-
-
-def current_direction(data):
-    return _sub_vector(_my_head(data), _my_neck(data))
-
-
-@bottle.post('/move')
+@app.route('/move', methods=['GET', 'POST'])
 def move():
-    data = bottle.request.json
-    current_vector = current_direction(data)
-    if current_vector == (0,0):
-        return "up"
+    snake = get_snake()
+    data = flask.request.json
+    gamestate = GameState(data)
+    move = snake.move(gamestate)
 
-    head = _my_head(data)
-    empty_squares = _list_empty_squares(data)
-    pprint.pprint(
-        [current_vector, (0, 1), (0, -1), (1, 0), (-1, 0)]
-    )
-    for v in [current_vector, (0,1), (0,-1), (1,0), (-1,0)]:
-        next_pos = _add_vector(head, v)
-        print next_pos
-        if next_pos in empty_squares:
-            if next_pos in empty_squares:
-                response = {"move": _vector_to_direction(v)}
-                pprint.pprint(response)
-                return json.dumps(response)
+    return json.dumps({
+        "move": move.direction()
+    })
 
 
-@bottle.post('/end')
+@app.route('/end', methods=['GET', 'POST'])
 def end():
-    data = bottle.request.json
-    pprint.pprint(data)
+    snake = get_snake()
+    snake.end()
+
     return json.dumps({})
 
 
-# Expose WSGI app
-application = bottle.default_app()
-
 if __name__ == "__main__":
-    bottle.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)
