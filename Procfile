@@ -1,1 +1,1 @@
-web: gunicorn app.wsgi:application
+web: export DIFFICULTY=1; gunicorn app.wsgi:application
