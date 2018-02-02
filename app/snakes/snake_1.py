@@ -1,21 +1,16 @@
 from utils.vector import Vector, up, down, left, right
-from base_snake import BaseSnake
+from snake_0 import Snake0
 
 
-class Snake1(BaseSnake):
+class Snake1(Snake0):
 
     def move(self, gamestate):
-
-        current_vector = gamestate.current_direction()
-        if current_vector == Vector(0, 0):
-            return up
-
-        head = gamestate.my_head()
-        for v in [current_vector, up, down, left, right]:
+        default_move = Snake0().move(gamestate)
+        head = gamestate.my_head
+        for v in [default_move, up, down, left, right]:
             if gamestate.is_empty(head + v):
                 return v
-
-        return Vector(0, 1)
+        return default_move
 
     def name(self):
         return "Training Snake 1"

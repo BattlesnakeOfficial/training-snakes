@@ -6,6 +6,7 @@ class GameState(object):
     def __init__(self, data):
         self.data = data
         self._empty_squares = None
+        self._food = None
 
     def empty_squares(self):
 
@@ -34,15 +35,33 @@ class GameState(object):
     def is_empty(self, v):
         return (v.x, v.y) in self.empty_squares()
 
+    @property
     def my_head(self):
         segments = self.data["you"]["body"]["data"]
         p = segments[0]
         return Vector(p["x"], p["y"])
 
+    @property
     def my_neck(self):
         segments = self.data["you"]["body"]["data"]
         p = segments[1]
         return Vector(p["x"], p["y"])
 
+    @property
     def current_direction(self):
-        return self.my_head() - self.my_neck()
+        return self.my_head - self.my_neck
+
+    @property
+    def board_width(self):
+        return self.data["width"]
+
+    @property
+    def board_height(self):
+        return self.data["height"]
+
+    @property
+    def food(self):
+        if self._food is None:
+            self._food = [Vector(f["x"], f["y"]) for f in self.data["food"]["data"]]
+        print self._food
+        return self._food

@@ -1,24 +1,28 @@
-from utils.vector import Vector, up, down, left, right
+from utils.vector import Vector, up, down, left, right, noop
 from base_snake import BaseSnake
 
 
-class Snake2(BaseSnake):
+class Snake3(BaseSnake):
 
     def move(self, gamestate):
-
-        current_vector = gamestate.current_direction()
-        if current_vector == Vector(0, 0):
-            return up
-
-        head = gamestate.my_head()
-        for v in [current_vector, up, down, left, right]:
+        first_food = gamestate.food[0]
+        ordered_directions = self._directions_to(first_food, gamestate)
+        head = gamestate.my_head
+        for v in ordered_directions:
             if gamestate.is_empty(head + v):
                 return v
+        return up
 
-        return Vector(0, 1)
+    def _directions_to(self, goal, gamestate):
+        to_travel = goal - gamestate.my_head
+        horizontal = [left, right] if goal.x < gamestate.my_head.x else [right, left]
+        vertical = [up, down] if goal.y < gamestate.my_head.y else [down, up]
+        if to_travel.x > to_travel.y:
+            return horizontal + vertical
+        return vertical + horizontal
 
     def name(self):
-        return "Training Snake 2"
+        return "Training Snake 3"
 
     def color(self):
         return "#05f299"
