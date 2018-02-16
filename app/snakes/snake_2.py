@@ -10,12 +10,11 @@ class Snake2(BaseSnake):
         if current_vector == noop:
             return up
 
-        head = gamestate.my_head
-        for v in [current_vector, up, down, left, right]:
-            if gamestate.is_empty(head + v):
-                return v
-
-        return up
+        return gamestate.first_empty_direction(
+            gamestate.my_head,
+            [current_vector, up, down, left, right],
+            up
+        )
 
     def name(self):
         return "Training Snake 2"

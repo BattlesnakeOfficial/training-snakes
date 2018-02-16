@@ -22,6 +22,26 @@ class Vector(object):
             self._mag = math.sqrt(self.x*self.x + self.y*self.y)
         return self._mag
 
+    def farthest(self, others):
+        f = None
+        f_dist = None
+        for other in others:
+            dist = (other - self).magnitude
+            if f is None or dist > f_dist:
+                f = other
+                f_dist = dist
+        return f
+
+    def closest(self, others):
+        f = None
+        f_dist = None
+        for other in others:
+            dist = (other - self).magnitude
+            if f is None or dist < f_dist:
+                f = other
+                f_dist = dist
+        return f
+
     def __unicode__(self):
         return u"{}".format(self.__str__())
 

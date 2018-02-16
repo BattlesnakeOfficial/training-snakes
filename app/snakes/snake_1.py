@@ -6,11 +6,12 @@ class Snake1(Snake0):
 
     def move(self, gamestate):
         default_move = Snake0().move(gamestate)
-        head = gamestate.my_head
-        for v in [default_move, up, down, left, right]:
-            if gamestate.is_empty(head + v):
-                return v
-        return default_move
+        v = gamestate.first_empty_direction(
+            gamestate.my_head,
+            [default_move, up, down, left, right],
+            default_move,
+        )
+        return v
 
     def name(self):
         return "Training Snake 1"

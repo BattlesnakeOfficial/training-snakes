@@ -6,12 +6,11 @@ class Snake3(BaseSnake):
 
     def move(self, gamestate):
         first_food = gamestate.food[0]
-        ordered_directions = self._directions_to(first_food, gamestate)
-        head = gamestate.my_head
-        for v in ordered_directions:
-            if gamestate.is_empty(head + v):
-                return v
-        return up
+        return gamestate.first_empty_direction(
+            gamestate.my_head,
+            self._directions_to(first_food, gamestate),
+            up,
+        )
 
     def _directions_to(self, goal, gamestate):
         to_travel = goal - gamestate.my_head

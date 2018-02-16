@@ -11,19 +11,17 @@ class Snake0(BaseSnake):
             return current_vector
 
         head = gamestate.my_head
-        dist_left = head.x
-        dist_right = gamestate.board_width - dist_left
-        dist_up = head.y
-        dist_down = gamestate.board_height - dist_up
-        dists = [dist_left, dist_right, dist_up, dist_down]
-        max_dist = max(dists)
-
+        l_wall = Vector(0, head.y)
+        r_wall = Vector(gamestate.board_width-1, head.y)
+        t_wall = Vector(head.x, 0)
+        b_wall = Vector(head.x, gamestate.board_width-1)
+        farthest = head.farthest([l_wall, r_wall, t_wall, b_wall])
         return {
-            dist_left: left,
-            dist_right: right,
-            dist_up: up,
-            dist_down: down,
-        }.get(max_dist, up)
+            l_wall: left,
+            r_wall: right,
+            t_wall: up,
+            b_wall: down,
+        }.get(farthest, up)
 
     def name(self):
         return "Training Snake 0"

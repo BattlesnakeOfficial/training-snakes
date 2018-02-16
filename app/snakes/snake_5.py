@@ -1,25 +1,26 @@
-import random
 from utils.vector import Vector, up, down, left, right, noop
 from base_snake import BaseSnake
 
 
-class Snake4(BaseSnake):
+class Snake5(BaseSnake):
 
     def move(self, gamestate):
-        options = [up, down, left, right]
-        closest_food = gamestate.my_head.closest(gamestate.food)
-        if closest_food is not None:
-            options = self._directions_to(closest_food, gamestate)
+        closest_food = self._closest_to(gamestate.food, gamestate.my_head)
+        if closest_food is None:
+            return up
+        return gamestate.first_empty_direction(
+            gamestate.my_head,
+            self._directions_to(closest_food, gamestate),
+            up)
 
-        m = gamestate.first_empty_direction(gamestate.my_head, options, default=noop)
-        if m != noop:
-            return m
+    def _closest_to(self, goals, start):
+        if len(goals) == 0:
+            return None
 
-        n = gamestate.neighbouring_heads()
-        if len(n) > 0:
-            return random.choice(n)
-
-        return m
+        def _dist(a, b):
+            return abs((a-b).magnitude)
+        goals.sort(key=lambda x: _dist(x, start), reverse=False)
+        return goals[0]
 
     def _directions_to(self, goal, gamestate):
         distances = [
