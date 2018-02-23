@@ -1,5 +1,5 @@
 from vector import Vector, up, down, left, right
-
+from snake import Snake
 
 class GameState(object):
 
@@ -7,6 +7,8 @@ class GameState(object):
         self.data = data
         self._empty_squares = None
         self._food = None
+        self._snakes = None
+        self._me = None
 
     def other_heads(self):
         heads = []
@@ -16,17 +18,10 @@ class GameState(object):
         return heads
 
     def neighbouring_heads(self):
-        neighbouring_squares = [
-            self.my_head+up,
-            self.my_head +down,
-            self.my_head +left,
-            self.my_head +right,
-        ]
-
         neighbours = []
-        for other_head in self.other_heads():
-            if other_head in neighbouring_squares:
-                neighbours.append(other_head)
+        for snake in self.snakes:
+            if snake.head in self.me.head.neighbours():
+                neighbours.append(snake.head)
         return neighbours
 
     def neighbouring_heads_next(self):
@@ -48,6 +43,11 @@ class GameState(object):
             for y in range(0, height):
                 empty_squares[(x, y)] = True
 
+        empty_squares = self._remove_solid_squares(empty_squares)
+        self._empty_squares = empty_squares
+        return empty_squares
+
+    def _remove_solid_squares(self, empty_squares):
         for snake in self.data["snakes"]["data"]:
             segments = snake["body"]["data"]
             for segment in segments:
@@ -56,8 +56,6 @@ class GameState(object):
                 v = (x, y)
                 if v in empty_squares:
                     del empty_squares[v]
-
-        self._empty_squares = empty_squares
         return empty_squares
 
     def first_empty_direction(self, start, options, default=up):
@@ -71,27 +69,15 @@ class GameState(object):
 
     @property
     def me(self):
-        return self.data["you"]
+        if self._me is None:
+            self._me = Snake(self.data["you"])
+        return self._me
 
     @property
     def snakes(self):
-        return self.data["snakes"]
-
-    @property
-    def my_head(self):
-        segments = self.data["you"]["body"]["data"]
-        p = segments[0]
-        return Vector(p["x"], p["y"])
-
-    @property
-    def my_neck(self):
-        segments = self.data["you"]["body"]["data"]
-        p = segments[1]
-        return Vector(p["x"], p["y"])
-
-    @property
-    def current_direction(self):
-        return self.my_head - self.my_neck
+        if self._snakes is None:
+            self._snakes = [Snake(d) for d in self.data["snakes"]]
+        return self._snakes
 
     @property
     def board_width(self):

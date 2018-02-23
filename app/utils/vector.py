@@ -22,6 +22,9 @@ class Vector(object):
             self._mag = math.sqrt(self.x*self.x + self.y*self.y)
         return self._mag
 
+    def neighbours(self):
+        return [self+d for d in [up, down, left, right]]
+
     def farthest(self, others):
         f = None
         f_dist = None

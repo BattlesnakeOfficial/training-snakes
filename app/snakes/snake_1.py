@@ -1,4 +1,4 @@
-from utils.vector import Vector, up, down, left, right
+from utils.vector import up, down, left, right
 from snake_0 import Snake0
 
 
@@ -7,7 +7,7 @@ class Snake1(Snake0):
     def move(self, gamestate):
         default_move = Snake0().move(gamestate)
         v = gamestate.first_empty_direction(
-            gamestate.my_head,
+            gamestate.me.head,
             [default_move, up, down, left, right],
             default_move,
         )

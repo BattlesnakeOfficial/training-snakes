@@ -1,7 +1,7 @@
 import flask
 import json
 from utils.game_state import GameState
-from snakes import get_snake
+from snakes import get_snake, get_random_color
 
 app = flask.Flask(__name__)
 
@@ -21,7 +21,7 @@ def start(snake_name):
 
     return json.dumps({
         'name': snake.name(),
-        'color': snake.color(),
+        'color': get_random_color(snake_name),
         'head_url': snake.head_url(),
         'taunt': snake.taunt()
     })
@@ -31,7 +31,7 @@ def start(snake_name):
 def move(snake_name):
     snake = get_snake(snake_name)
     data = flask.request.json
-    gamestate = GameState(data)
+    gamestate = snake.payload_to_game_state(data)
     move = snake.move(gamestate)
 
     return json.dumps({
@@ -47,4 +47,7 @@ def end(snake_name):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    try:
+        app.run(host='0.0.0.0', port=8080, debug=True)
+    except Exception as e:
+        raise e

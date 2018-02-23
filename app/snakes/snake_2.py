@@ -1,4 +1,4 @@
-from utils.vector import Vector, up, down, left, right, noop
+from utils.vector import up, down, left, right, noop
 from base_snake import BaseSnake
 
 
@@ -6,12 +6,12 @@ class Snake2(BaseSnake):
 
     def move(self, gamestate):
 
-        current_vector = gamestate.current_direction
+        current_vector = gamestate.me.current_direction
         if current_vector == noop:
             return up
 
         return gamestate.first_empty_direction(
-            gamestate.my_head,
+            gamestate.me.head,
             [current_vector, up, down, left, right],
             up
         )

@@ -6,11 +6,11 @@ class Snake0(BaseSnake):
 
     def move(self, gamestate):
 
-        current_vector = gamestate.current_direction
+        current_vector = gamestate.me.current_direction
         if current_vector != noop:
             return current_vector
 
-        head = gamestate.my_head
+        head = gamestate.me.head
         l_wall = Vector(0, head.y)
         r_wall = Vector(gamestate.board_width-1, head.y)
         t_wall = Vector(head.x, 0)

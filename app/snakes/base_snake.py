@@ -1,5 +1,10 @@
+from utils.game_state import GameState
+
 
 class BaseSnake(object):
+
+    def payload_to_game_state(self, payload):
+        return GameState(payload)
 
     def move(self, gamestate):
         raise NotImplemented("this should be overridden on implementations of snakes")

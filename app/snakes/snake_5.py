@@ -1,15 +1,15 @@
-from utils.vector import Vector, up, down, left, right, noop
+from utils.vector import up, down, left, right
 from base_snake import BaseSnake
 
 
 class Snake5(BaseSnake):
 
     def move(self, gamestate):
-        closest_food = self._closest_to(gamestate.food, gamestate.my_head)
+        closest_food = self._closest_to(gamestate.food, gamestate.me.head)
         if closest_food is None:
             return up
         return gamestate.first_empty_direction(
-            gamestate.my_head,
+            gamestate.me.head,
             self._directions_to(closest_food, gamestate),
             up)
 
@@ -24,10 +24,10 @@ class Snake5(BaseSnake):
 
     def _directions_to(self, goal, gamestate):
         distances = [
-            ((goal-gamestate.my_head-left).magnitude, left),
-            ((goal-gamestate.my_head-right).magnitude, right),
-            ((goal-gamestate.my_head-up).magnitude, up),
-            ((goal-gamestate.my_head-down).magnitude, down),
+            ((goal-gamestate.me.head-left).magnitude, left),
+            ((goal-gamestate.me.head-right).magnitude, right),
+            ((goal-gamestate.me.head-up).magnitude, up),
+            ((goal-gamestate.me.head-down).magnitude, down),
         ]
         distances.sort(key=lambda x: x[0], reverse=False)
         return [d[1] for d in distances]
