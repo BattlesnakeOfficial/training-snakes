@@ -1,6 +1,7 @@
 from vector import Vector, up, down, left, right
 from snake import Snake
 
+
 class GameState(object):
 
     def __init__(self, data):
@@ -8,14 +9,18 @@ class GameState(object):
         self._empty_squares = None
         self._food = None
         self._snakes = None
+        self._all_snakes = None
         self._me = None
+        self._other_heads = None
 
     def other_heads(self):
-        heads = []
-        for snake in self.data["snakes"]["data"]:
-            head = snake["body"]["data"][0]
-            heads.append(Vector(head["x"], head["y"]))
-        return heads
+        if self._other_heads is None:
+            heads = []
+            for snake in self.data["snakes"]["data"]:
+                head = snake["body"]["data"][0]
+                heads.append(Vector(head["x"], head["y"]))
+            self._other_heads = heads
+        return self._other_heads
 
     def neighbouring_heads(self):
         neighbours = []
@@ -72,8 +77,8 @@ class GameState(object):
         kill_coords = []
         for snake in self.snakes:
             if snake.length < self.me.length:
-                for my_neighbour in self.me.head.neighbours:
-                    for their_neighbour in snake.head.neighbours:
+                for my_neighbour in self.me.head.neighbours():
+                    for their_neighbour in snake.head.neighbours():
                         if my_neighbour == their_neighbour:
                             kill_coords += my_neighbour
         return kill_coords
@@ -125,10 +130,16 @@ class GameState(object):
         return self._me
 
     @property
-    def snakes(self):
-        if self._snakes is None:
-            self._snakes = [Snake(d) for d in self.data["snakes"]]
-        return self._snakes
+    def all_snakes(self):
+        if self._all_snakes is None:
+            self._all_snakes = [Snake(d) for d in self.data["snakes"]["data"]]
+        return self._all_snakes
+
+    @property
+    def opponents(self):
+        if self._opponents is None:
+            self._opponents = [s for s in self.all_snakes if s.id != self.me.id]
+        return self._opponents
 
     @property
     def board_width(self):
