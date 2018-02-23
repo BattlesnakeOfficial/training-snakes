@@ -110,7 +110,7 @@ class GameState(object):
         to_visit = [(start, 0)]
         while len(to_visit) > 0 and len(unreached_goals) > 0:
             p, dist = to_visit.pop()
-            if p in visited:
+            if visited[p]:
                 continue
             visited[p] = dist
 
