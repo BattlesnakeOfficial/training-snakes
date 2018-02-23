@@ -33,7 +33,7 @@ class Snake5(BaseSnake):
         return [d[1] for d in distances]
 
     def name(self):
-        return "Training Snake 4"
+        return "Training Snake 5"
 
     def color(self):
         return "#05f299"
