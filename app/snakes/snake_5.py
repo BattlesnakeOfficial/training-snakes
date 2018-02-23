@@ -2,7 +2,7 @@ from utils.vector import up, down, left, right
 from base_snake import BaseSnake
 
 
-class Snake5(BaseSnake):
+class SimpleHungrySnake(BaseSnake):
 
     def move(self, gamestate):
         closest_food = self._closest_to(gamestate.food, gamestate.me.head)

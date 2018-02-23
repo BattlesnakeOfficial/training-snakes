@@ -1,8 +1,9 @@
 import random
 from base_snake import BaseSnake
-from snake_3 import Snake3
+from snake_7 import SimpleSometimesHungrySnake
 
-class Snake8(BaseSnake):
+
+class TailChaser(BaseSnake):
 
     THRESHOLD = 30
 
@@ -12,12 +13,9 @@ class Snake8(BaseSnake):
             goal = random.choice(gamestate.possible_kill_coords)
             return goal - gamestate.me.head
 
-        if gamestate.me.health > self.THRESHOLD:
-            return Snake3().move(gamestate)
-
         visitable_tails = gamestate.distance_to(gamestate.me.head, gamestate.all_tails)
-        if len(visitable_tails) == 0:
-            return Snake3().move(gamestate)
+        if len(visitable_tails) == 0 or gamestate.me.health > self.THRESHOLD:
+            return SimpleSometimesHungrySnake().move(gamestate)
 
         closest_tail = visitable_tails[0]
         return gamestate.move_towards(closest_tail)

@@ -3,7 +3,7 @@ from utils.vector import up, down, left, right, noop
 from base_snake import BaseSnake
 
 
-class Snake4(BaseSnake):
+class ScaredSnake(BaseSnake):
 
     def move(self, gamestate):
         options = [up, down, left, right]

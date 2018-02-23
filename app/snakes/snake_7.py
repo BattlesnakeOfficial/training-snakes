@@ -1,10 +1,9 @@
 import random
 from base_snake import BaseSnake
-from snake_3 import Snake3
-from snake_5 import Snake5
+from snake_6 import SimpleSometimesHungrySnake
 
 
-class Snake7(BaseSnake):
+class AttemptKillsSnake(BaseSnake):
 
     THRESHOLD = 30
 
@@ -14,9 +13,7 @@ class Snake7(BaseSnake):
             goal = random.choice(gamestate.possible_kill_coords)
             return goal - gamestate.me.head
 
-        if gamestate.me.health > self.THRESHOLD:
-            return Snake3().move(gamestate)
-        return Snake5().move(gamestate)
+        return SimpleSometimesHungrySnake().move(gamestate)
 
 
     def name(self):

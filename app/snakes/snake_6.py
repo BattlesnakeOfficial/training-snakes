@@ -1,16 +1,16 @@
 from base_snake import BaseSnake
-from snake_3 import Snake3
-from snake_5 import Snake5
+from snake_4 import ScaredSnake
+from snake_5 import SimpleHungrySnake
 
 
-class Snake6(BaseSnake):
+class SimpleSometimesHungrySnake(BaseSnake):
 
     THRESHOLD = 30
 
     def move(self, gamestate):
         if gamestate.me.health > self.THRESHOLD:
-            return Snake3().move(gamestate)
-        return Snake5().move(gamestate)
+            return ScaredSnake().move(gamestate)
+        return SimpleHungrySnake().move(gamestate)
 
     def name(self):
         return "Training Snake 6"
