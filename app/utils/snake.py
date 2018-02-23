@@ -32,66 +32,79 @@ class Snake(object):
                 points = self.data["body"]["data"]
                 self._coords = [Vector(p["x"], p["y"]) for p in points]
             return self._coords
-        except:
+        except Exception as e:
+            print e
             pprint.pprint(self.data)
 
     @property
     def head(self):
         try:
             return self.coords[0]
-        except:
+        except Exception as e:
+            print e
             pprint.pprint(self.data)
 
     @property
     def neck(self):
         try:
             return self.coords[1]
-        except:
+        except Exception as e:
+            print e
             pprint.pprint(self.data)
 
     @property
     def tail(self):
         try:
             return self.coords[len(self.coords)-1]
-        except:
+        except Exception as e:
+            print e
             pprint.pprint(self.data)
 
     @property
     def current_direction(self):
         try:
             return self.head - self.neck
-        except:
+        except Exception as e:
+            print e
             pprint.pprint(self.data)
 
     @property
     def length(self):
         try:
             return self.data["length"]
-        except:
+        except Exception as e:
+            print e
             pprint.pprint(self.data)
 
     @property
     def health(self):
         try:
             return self.data["health"]
-        except:
+        except Exception as e:
+            print e
             pprint.pprint(self.data)
 
     @property
     def id(self):
         try:
             return self.data["id"]
-        except:
+        except Exception as e:
+            print e
             pprint.pprint(self.data)
 
     @property
     def name(self):
-        return self.data["name"]
+        try:
+            return self.data["name"]
+        except Exception as e:
+            print e
+            pprint.pprint(self.data)
 
     @property
     def taunt(self):
         try:
             taunt = self.data["taunt"]
             return taunt if taunt is not None else ""
-        except:
+        except Exception as e:
+            print e
             pprint.pprint(self.data)
