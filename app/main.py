@@ -1,6 +1,5 @@
 import flask
 import json
-from utils.game_state import GameState
 from snakes import get_snake, get_random_color
 
 app = flask.Flask(__name__)

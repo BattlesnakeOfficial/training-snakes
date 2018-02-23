@@ -1,5 +1,5 @@
 import random
-from snake_10 import Snake10
+# from snake_10 import Snake10
 from snake_5 import Snake5
 from snake_4 import Snake4
 from snake_3 import Snake3
@@ -14,7 +14,7 @@ _snakes = {
     "snake_3": Snake3(),
     "snake_4": Snake4(),
     "snake_5": Snake5(),
-    "bambora": Snake10(),
+    # "bambora": Snake10(),
 }
 
 
