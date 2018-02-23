@@ -68,6 +68,57 @@ class GameState(object):
         return (v.x, v.y) in self.empty_squares()
 
     @property
+    def possible_kill_coords(self):
+        kill_coords = []
+        for snake in self.snakes:
+            if snake.length < self.me.length:
+                for my_neighbour in self.me.head.neighbours:
+                    for their_neighbour in snake.head.neighbours:
+                        if my_neighbour == their_neighbour:
+                            kill_coords += my_neighbour
+        return kill_coords
+
+    @property
+    def possible_death_coords(self):
+        death_coords = []
+        for snake in self.snakes:
+            if snake.length > self.me.length:
+                for my_neighbour in self.me.head.neighbours:
+                    for their_neighbour in snake.head.neighbours:
+                        if my_neighbour == their_neighbour:
+                            death_coords += my_neighbour
+        return death_coords
+
+    @property
+    def all_tails(self):
+        all_tails = [self.me.tail]
+        for s in self.snakes:
+            all_tails += s.tail
+        return all_tails
+
+    # returns a list of tuples (goal, distance_from_start)
+    def distance_to(self, start, goals):
+        reached_goals = []
+        unreached_goals = goals
+        visited = {}
+        to_visit = [(start, 0)]
+        while len(to_visit) > 0 and len(unreached_goals) > 0:
+            p, dist = to_visit.pop()
+            if p in visited:
+                continue
+            visited[p] = dist
+
+            if p in unreached_goals:
+                reached_goals.append((p, dist))
+
+            for n in p.neighbours():
+                if self.is_empty(n):
+                    to_visit.append((n, dist + 1))
+                    
+        reached_goals = sorted(reached_goals, key=lambda tup: tup[1])
+        return reached_goals
+
+    @property
     def me(self):
         if self._me is None:
             self._me = Snake(self.data["you"])
