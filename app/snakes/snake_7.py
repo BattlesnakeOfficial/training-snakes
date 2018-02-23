@@ -15,7 +15,6 @@ class AttemptKillsSnake(BaseSnake):
 
         return SimpleSometimesHungrySnake().move(gamestate)
 
-
     def name(self):
         return "Training Snake 7"
 

@@ -1,7 +1,7 @@
 import random
 # from snake_10 import Snake10
 from snake_8 import TailChaser
-from snake_7 import Snake7
+from snake_7 import AttemptKillsSnake
 from snake_6 import SimpleSometimesHungrySnake
 from snake_5 import SimpleHungrySnake
 from snake_4 import ScaredSnake
@@ -18,7 +18,7 @@ _snakes = {
     "snake_4": ScaredSnake(),
     "snake_5": SimpleHungrySnake(),
     "snake_6": SimpleSometimesHungrySnake(),
-    "snake_7": Snake7(),
+    "snake_7": AttemptKillsSnake(),
     "snake_8": TailChaser(),
     # "bambora": Snake10(),
 }
