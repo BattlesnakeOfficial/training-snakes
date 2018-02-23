@@ -23,7 +23,7 @@ Run the game server locally:
 ```
 
 ## Training Snakes
-To help battlesnake attendies train and verify their snakes, we'll provide a pool of snakes with a gradient of difficulties.
+To help battlesnake attendees train and verify their snakes, we'll provide a pool of snakes with a gradient of difficulties.
 
 ### Snake 0
 - Goes in a straight line (always in the longest direction)
