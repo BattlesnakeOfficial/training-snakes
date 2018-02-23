@@ -81,7 +81,7 @@ class GameState(object):
                 for my_neighbour in self.me.head.neighbours():
                     for their_neighbour in snake.head.neighbours():
                         if my_neighbour == their_neighbour:
-                            kill_coords += my_neighbour
+                            kill_coords.append(my_neighbour)
         return kill_coords
 
     @property
@@ -92,7 +92,7 @@ class GameState(object):
                 for my_neighbour in self.me.head.neighbours:
                     for their_neighbour in snake.head.neighbours:
                         if my_neighbour == their_neighbour:
-                            death_coords += my_neighbour
+                            death_coords.append(my_neighbour)
         return death_coords
 
     @property
