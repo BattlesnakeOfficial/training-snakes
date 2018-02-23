@@ -99,7 +99,7 @@ class GameState(object):
     def all_tails(self):
         all_tails = [self.me.tail]
         for s in self.all_snakes:
-            all_tails += s.tail
+            all_tails.append(s.tail)
         return all_tails
 
     # returns a list of tuples (goal, distance_from_start)
