@@ -116,10 +116,17 @@ class GameState(object):
 
             if p in unreached_goals:
                 reached_goals.append((p, dist))
+                unreached_goals.remove(p)
 
             for n in p.neighbours():
                 if self.is_empty(n):
                     to_visit.append((n, dist + 1))
+
+            print "\n### distance to debugging ###"
+            print "reached goals: "+reached_goals
+            print "unreached goals: "+unreached_goals
+            print "visited: "+len(visited)
+            print "to visit: "+len(to_visit)
 
         reached_goals = sorted(reached_goals, key=lambda tup: tup[1])
         return reached_goals
