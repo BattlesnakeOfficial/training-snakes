@@ -122,12 +122,6 @@ class GameState(object):
                 if self.is_empty(n):
                     to_visit.append((n, dist + 1))
 
-            print "\n### distance to debugging ###"
-            print "reached goals: %s" % reached_goals
-            print "unreached goals: %s" % unreached_goals
-            print "visited: %s" % len(visited)
-            print "to visit: %s" % len(to_visit)
-
         reached_goals = sorted(reached_goals, key=lambda tup: tup[1])
         return reached_goals
 
