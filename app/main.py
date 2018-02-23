@@ -30,8 +30,6 @@ def start(snake_name):
 def move(snake_name):
     snake = get_snake(snake_name)
     data = flask.request.json
-    import pprint
-    pprint.pprint(data)
     gamestate = snake.payload_to_game_state(data)
     move = snake.move(gamestate)
 

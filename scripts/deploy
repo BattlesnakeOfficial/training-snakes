@@ -3,3 +3,4 @@
 # git remote add production https://git.heroku.com/battlesnake-training-snakes.git
 
 git push production master
+./scripts/logs
