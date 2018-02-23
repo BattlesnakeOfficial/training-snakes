@@ -114,7 +114,7 @@ class GameState(object):
             for n in p.neighbours():
                 if self.is_empty(n):
                     to_visit.append((n, dist + 1))
-                    
+
         reached_goals = sorted(reached_goals, key=lambda tup: tup[1])
         return reached_goals
 

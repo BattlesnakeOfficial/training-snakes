@@ -1,4 +1,5 @@
 from vector import Vector
+import pprint
 
 
 class Snake(object):
@@ -26,10 +27,13 @@ class Snake(object):
 
     @property
     def coords(self):
-        if self._coords is None:
-            points = self.data["body"]["data"]
-            self._coords = [Vector(p["x"], p["y"]) for p in points]
-        return self._coords
+        try:
+            if self._coords is None:
+                points = self.data["body"]["data"]
+                self._coords = [Vector(p["x"], p["y"]) for p in points]
+            return self._coords
+        except:
+            pprint.pprint(self.data)
 
     @property
     def head(self):
