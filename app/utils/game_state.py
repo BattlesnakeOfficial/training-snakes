@@ -24,7 +24,7 @@ class GameState(object):
 
     def neighbouring_heads(self):
         neighbours = []
-        for snake in self.snakes:
+        for snake in self.opponents:
             if snake.head in self.me.head.neighbours():
                 neighbours.append(snake.head)
         return neighbours
@@ -75,7 +75,7 @@ class GameState(object):
     @property
     def possible_kill_coords(self):
         kill_coords = []
-        for snake in self.snakes:
+        for snake in self.opponents:
             if snake.length < self.me.length:
                 for my_neighbour in self.me.head.neighbours():
                     for their_neighbour in snake.head.neighbours():
@@ -86,7 +86,7 @@ class GameState(object):
     @property
     def possible_death_coords(self):
         death_coords = []
-        for snake in self.snakes:
+        for snake in self.opponents:
             if snake.length > self.me.length:
                 for my_neighbour in self.me.head.neighbours:
                     for their_neighbour in snake.head.neighbours:
@@ -97,7 +97,7 @@ class GameState(object):
     @property
     def all_tails(self):
         all_tails = [self.me.tail]
-        for s in self.snakes:
+        for s in self.all_snakes:
             all_tails += s.tail
         return all_tails
 
