@@ -122,12 +122,6 @@ class GameState(object):
                 if self.is_empty(n):
                     to_visit.append((n, dist + 1))
 
-            print ""
-            print reached_goals
-            print unreached_goals
-            print visited
-            print to_visit
-
         reached_goals = sorted(reached_goals, key=lambda tup: tup[1])
         return reached_goals
 
