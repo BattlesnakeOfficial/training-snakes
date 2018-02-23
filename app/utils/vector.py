@@ -9,12 +9,16 @@ class Vector(object):
         self._mag = None
 
     def direction(self):
-        return {
-            (0, -1): "up",
-            (0, 1): "down",
-            (1, 0): "right",
-            (-1, 0): "left",
-        }[(self.x, self.y)]
+        try:
+            return {
+                (0, -1): "up",
+                (0, 1): "down",
+                (1, 0): "right",
+                (-1, 0): "left",
+            }[(self.x, self.y)]
+        except Exception as e:
+            print e
+            return "up"
 
     @property
     def magnitude(self):

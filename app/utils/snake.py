@@ -37,31 +37,52 @@ class Snake(object):
 
     @property
     def head(self):
-        return self.coords[0]
+        try:
+            return self.coords[0]
+        except:
+            pprint.pprint(self.data)
 
     @property
     def neck(self):
-        return self.coords[1]
+        try:
+            return self.coords[1]
+        except:
+            pprint.pprint(self.data)
 
     @property
     def tail(self):
-        return self.coords[len(self.coords)-1]
+        try:
+            return self.coords[len(self.coords)-1]
+        except:
+            pprint.pprint(self.data)
 
     @property
     def current_direction(self):
-        return self.head - self.neck
+        try:
+            return self.head - self.neck
+        except:
+            pprint.pprint(self.data)
 
     @property
     def length(self):
-        return self.data["length"]
+        try:
+            return self.data["length"]
+        except:
+            pprint.pprint(self.data)
 
     @property
     def health(self):
-        return self.data["health"]
+        try:
+            return self.data["health"]
+        except:
+            pprint.pprint(self.data)
 
     @property
     def id(self):
-        return self.data["id"]
+        try:
+            return self.data["id"]
+        except:
+            pprint.pprint(self.data)
 
     @property
     def name(self):
@@ -69,5 +90,8 @@ class Snake(object):
 
     @property
     def taunt(self):
-        taunt = self.data["taunt"]
-        return taunt if taunt is not None else ""
+        try:
+            taunt = self.data["taunt"]
+            return taunt if taunt is not None else ""
+        except:
+            pprint.pprint(self.data)
