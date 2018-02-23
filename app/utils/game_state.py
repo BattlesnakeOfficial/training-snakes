@@ -110,9 +110,9 @@ class GameState(object):
         to_visit = [(start, 0)]
         while len(to_visit) > 0 and len(unreached_goals) > 0:
             p, dist = to_visit.pop()
-            if str(p) in visited:
+            if p.key in visited:
                 continue
-            visited[str(p)] = dist
+            visited[p.key] = dist
 
             if p in unreached_goals:
                 reached_goals.append((p, dist))
@@ -121,6 +121,12 @@ class GameState(object):
             for n in p.neighbours():
                 if self.is_empty(n):
                     to_visit.append((n, dist + 1))
+
+            print ""
+            print reached_goals
+            print unreached_goals
+            print visited
+            print to_visit
 
         reached_goals = sorted(reached_goals, key=lambda tup: tup[1])
         return reached_goals

@@ -58,6 +58,10 @@ class Vector(object):
         except:
             return "({}, {})".format(self.x, self.y)
 
+    @property
+    def key(self):
+        return "{}_{}".format(self.x, self.y)
+
     def __add__(self, other):
         return Vector(
             x=self.x + other.x,
