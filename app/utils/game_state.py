@@ -12,6 +12,7 @@ class GameState(object):
         self._all_snakes = None
         self._me = None
         self._other_heads = None
+        self._opponents = None
 
     def other_heads(self):
         if self._other_heads is None:
