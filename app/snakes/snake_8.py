@@ -17,13 +17,10 @@ class TailChaser(BaseSnake):
             return AttemptKillsSnake().move(gamestate), "hungry"
 
         visitable_tails = gamestate.best_paths_to(gamestate.me.head, gamestate.all_tails)
-        import pprint
-        pprint.pprint(visitable_tails)
         if len(visitable_tails) > 0:
             closest_goal = visitable_tails[0]
             (goal, distance_from_start, path) = closest_goal
             m = path[1] - gamestate.me.head
-            print m
             return m, "tail"
 
     def name(self):

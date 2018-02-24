@@ -154,7 +154,6 @@ class GameState(object):
             for n in current_position.neighbours():
                 d = visited.get(n.key)
                 if d is not None and d < current_distance:
-                    print "%s is closer %s" % (n, d)
                     path.append(n)
                     current_position = n
                     current_distance = d
