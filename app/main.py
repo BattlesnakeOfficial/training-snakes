@@ -32,7 +32,10 @@ def move(snake_name):
     data = flask.request.json
     gamestate = snake.payload_to_game_state(data)
     move = snake.move(gamestate)
-    if type(move) == tuple:
+    if type(move) is None:
+        return json.dumps({"move": "up",})
+
+    if type(move) is tuple:
         move, taunt = move
         return json.dumps({
             "move": move.direction(),
