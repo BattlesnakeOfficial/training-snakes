@@ -64,10 +64,13 @@ def build_test_gamestate(width=3, height=3, me=[(0,0)], opponents=[], food=[(2,2
 def test_distance_to():
     gs = build_test_gamestate(1, 3)
     dists = gs.distance_to(Vector(0, 0), [Vector(0, 2)])
-    assert dists == [(Vector(0, 2), 2)]
+    assert dists == [(Vector(0, 2), 2,[Vector(0, 2), Vector(0, 1), Vector(0, 0)])]
 
 
 def test_distance_to_multiple():
     gs = build_test_gamestate(1, 3)
     dists = gs.distance_to(Vector(0, 0), [Vector(0, 2), Vector(0, 1)])
-    assert dists == [(Vector(0, 1), 1), (Vector(0, 2), 2)]
+    assert dists == [
+        (Vector(0, 1), 1, [Vector(0, 1), Vector(0, 0)]),
+        (Vector(0, 2), 2, [Vector(0, 2), Vector(0, 1), Vector(0, 0)]),
+    ]

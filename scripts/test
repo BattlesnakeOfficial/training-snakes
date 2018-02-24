@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-import unittest
+#!/bin/bash
 
-if __name__ == '__main__':
-    unittest.main()
+pytest

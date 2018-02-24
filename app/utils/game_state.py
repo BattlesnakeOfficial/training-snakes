@@ -115,7 +115,8 @@ class GameState(object):
             visited[p.key] = dist
 
             if p in unreached_goals:
-                reached_goals.append((p, dist))
+                path = self._path(p, start, visited)
+                reached_goals.append((p, dist, path))
                 unreached_goals.remove(p)
 
             for n in p.neighbours():
@@ -124,6 +125,24 @@ class GameState(object):
 
         reached_goals = sorted(reached_goals, key=lambda tup: tup[1])
         return reached_goals
+
+    def _path(self, start, finish, visited):
+        path = [start]
+        current_position = start
+        current_distance = visited[start.key]
+        i = 0
+        while not current_position == finish:
+            for n in current_position.neighbours():
+                d = visited.get(n.key)
+                if d is not None and d < current_distance:
+                    path.append(n)
+                    current_position = n
+                    current_distance = d
+                    break
+            i += 1
+            if i>10:
+                return []
+        return path
 
     @property
     def me(self):
