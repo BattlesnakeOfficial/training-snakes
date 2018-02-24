@@ -22,7 +22,7 @@ class TailChaser(BaseSnake):
                 return desired_move, taunt
 
         print "dead"
-        return "dead"
+        return down
 
     def bad_move(self, move, desc, gs):
         if move is None:

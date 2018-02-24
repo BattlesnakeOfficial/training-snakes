@@ -48,18 +48,16 @@ class GameState(object):
         empty_squares = {}
         for x in range(0, width):
             for y in range(0, height):
-                empty_squares[(x, y)] = True
+                empty_squares[Vector(x, y).key] = True
 
         for p in self.me.coords:
-            v = (p.x, p.y)
-            if v in empty_squares:
-                del empty_squares[v]
+            if p.key in empty_squares:
+                del empty_squares[p.key]
 
         for snake in self.opponents:
             for p in snake.coords:
-                v = (p.x, p.y)
-                if v in empty_squares:
-                    del empty_squares[v]
+                if p.key in empty_squares:
+                    del empty_squares[p.key]
 
         self._empty_squares = empty_squares
         return empty_squares
@@ -71,7 +69,7 @@ class GameState(object):
         return default
 
     def is_empty(self, v):
-        return (v.x, v.y) in self.empty_squares()
+        return v.key in self.empty_squares()
 
     @property
     def possible_kill_coords(self):
@@ -105,25 +103,13 @@ class GameState(object):
     def travel_times(self, start):
         shortest_travel_times = {start.key: 0}
 
-        to_visit = [(n, 1) for n in start.neighbours()]
+        to_visit = [(start, 0)]
         while len(to_visit) > 0:
             (curr, turns) = to_visit.pop(0)
-
-            if not self.is_empty(curr):
-                continue
-
-            already_hit = curr.key in shortest_travel_times
-            shortest_travel_times[curr.key] = min(
-                shortest_travel_times.get(curr.key, turns),
-                turns
-            )
-            if already_hit:
-                continue
-
             for next in curr.neighbours():
-                if self.is_empty(next):
+                if self.is_empty(next) and next.key not in shortest_travel_times:
+                    shortest_travel_times[next.key] = turns+1
                     to_visit.append((next, turns+1))
-
         return shortest_travel_times
 
     def best_paths_to(self, start, goals, allow_length_1=False):
@@ -139,6 +125,8 @@ class GameState(object):
         return best_paths
 
     def _path(self, start, finish, travel_times, allow_length_1):
+        if start == finish:
+            return []
 
         starting_distances = []
         for n in finish.neighbours():
@@ -162,7 +150,7 @@ class GameState(object):
                 break
             for n in curr.neighbours():
                 next_dist = travel_times.get(n.key, dist)
-                if next_dist <= dist:
+                if next_dist < dist:
                     path.append(n)
                     curr = n
                     dist = next_dist
