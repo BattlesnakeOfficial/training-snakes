@@ -86,7 +86,7 @@ class GameState(object):
     def possible_death_coords(self):
         death_coords = []
         for snake in self.opponents:
-            if snake.length > self.me.length:
+            if snake.length >= self.me.length:
                 for my_neighbour in self.me.head.neighbours():
                     for their_neighbour in snake.head.neighbours():
                         if my_neighbour == their_neighbour:
@@ -104,7 +104,11 @@ class GameState(object):
         shortest_travel_times = {start.key: 0}
 
         to_visit = [(start, 0)]
+        i = 0
         while len(to_visit) > 0:
+            i += 1
+            if i > 1000:
+                print "broken travel times"
             (curr, turns) = to_visit.pop(0)
             for next in curr.neighbours():
                 if self.is_empty(next) and next.key not in shortest_travel_times:
@@ -128,8 +132,12 @@ class GameState(object):
         if start == finish:
             return []
 
+        i = 0
         starting_distances = []
         for n in finish.neighbours():
+            i += 1
+            if i > 1000:
+                print "broken pathing"
             if not allow_length_1 and n == start:
                 continue
             if n.key in travel_times:
@@ -146,15 +154,21 @@ class GameState(object):
         i = 0
         while curr != start:
             i += 1
-            if dist == 1:
-                break
+            if i > 1000:
+                print "broken pathing 2"
+
+            choices = []
             for n in curr.neighbours():
                 next_dist = travel_times.get(n.key, dist)
-                if next_dist < dist:
-                    path.append(n)
-                    curr = n
-                    dist = next_dist
-                    break
+                choices.append((n, next_dist))
+            choices = sorted(choices, key=lambda tup: tup[1])
+            prev_dist = dist
+            curr, dist = choices[0]
+            if dist < prev_dist:
+                path.append(curr)
+            else:
+                break
+
         path.reverse()
         return path
 

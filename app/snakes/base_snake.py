@@ -28,13 +28,23 @@ class BaseSnake(object):
     def end(self):
         raise NotImplemented("this should be overridden on implementations of snakes")
 
+    def bad_move(self, move, gs):
+        if move is None:
+            return True
+        coord = gs.me.head + move
+        if not gs.is_empty(coord) and coord not in gs.all_tails:
+            return True
+        if coord in gs.possible_death_coords:
+            return True
+        return False
+
     def chase_tail(self, gamestate):
         allow_length_1 = gamestate.turn >= 5
         visitable_tails = gamestate.best_paths_to(gamestate.me.head, gamestate.all_tails, allow_length_1)
         if len(visitable_tails) > 0:
             closest_goal = visitable_tails[0]
             (goal, distance_from_start, path) = closest_goal
-            m = path[0] - gamestate.me.head
+            m = path[1] - gamestate.me.head
             return m
 
     def orthogonal_eat(self, gamestate):

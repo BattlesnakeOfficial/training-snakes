@@ -17,25 +17,10 @@ class TailChaser(BaseSnake):
 
         for f, taunt in options:
             desired_move = f(gamestate)
-            if not self.bad_move(desired_move, taunt, gamestate):
-                print "good: %s, %s" % (desired_move, taunt)
+            if not self.bad_move(desired_move, gamestate):
                 return desired_move, taunt
 
-        print "dead"
         return down
-
-    def bad_move(self, move, desc, gs):
-        if move is None:
-            print "bad: is None, %s" % desc
-            return True
-        coord = gs.me.head + move
-        if not gs.is_empty(coord):
-            print "bad: is solid, %s" % desc
-            return True
-        if coord in gs.possible_death_coords:
-            print "bad: could be eaten, %s" % desc
-            return True
-        return False
 
     def name(self):
         return "Training Snake 8"
