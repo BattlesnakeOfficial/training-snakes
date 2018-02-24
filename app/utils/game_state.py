@@ -111,6 +111,8 @@ class GameState(object):
             p, dist = to_visit.pop()
             if p.key in visited:
                 continue
+            if not self.is_empty(p) and p not in goals:
+                continue
             visited[p.key] = dist
 
             if p in unreached_goals:
