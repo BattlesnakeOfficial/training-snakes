@@ -19,7 +19,9 @@ class TailChaser(BaseSnake):
 
         closest_goal = visitable_tails[0]
         (goal, distance_from_start, path) = closest_goal
-        return path[1] - gamestate.me.head
+        m = path[0] - gamestate.me.head
+        print m
+        return m
 
     def name(self):
         return "Training Snake 8"
