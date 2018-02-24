@@ -33,8 +33,7 @@ def move(snake_name):
     gamestate = snake.payload_to_game_state(data)
     move = snake.move(gamestate)
     if move is None:
-        import pprint
-        pprint.pprint(data)
+        print data
         return json.dumps({"move": "up"})
 
     if type(move) is tuple:
