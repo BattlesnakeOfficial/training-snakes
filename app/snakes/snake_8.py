@@ -20,7 +20,7 @@ class TailChaser(BaseSnake):
         if len(visitable_tails) > 0:
             closest_goal = visitable_tails[0]
             (goal, distance_from_start, path) = closest_goal
-            m = path[0] - gamestate.me.head
+            m = path[1] - gamestate.me.head
             print m
             return m, "tail"
 
