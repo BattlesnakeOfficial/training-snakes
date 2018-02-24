@@ -8,7 +8,7 @@ class SimpleSometimesHungrySnake(BaseSnake):
     THRESHOLD = 30
 
     def move(self, gamestate):
-        if gamestate.me.health > self.THRESHOLD:
+        if gamestate.me.health < self.THRESHOLD:
             return ScaredSnake().move(gamestate)
         return SimpleHungrySnake().move(gamestate)
 

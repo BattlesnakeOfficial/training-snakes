@@ -102,7 +102,7 @@ class GameState(object):
             all_tails.append(s.tail)
         return all_tails
 
-    # returns a list of tuples (goal, distance_from_start)
+    # returns a list of tuples (goal, distance_from_start, path)
     def distance_to(self, start, goals):
         reached_goals = []
         unreached_goals = goals
