@@ -29,6 +29,12 @@ class Vector(object):
     def neighbours(self):
         return [self+d for d in [up, down, left, right]]
 
+    def is_neighbour(self, p):
+        for n in self.neighbours():
+            if n == p:
+                return True
+        return False
+
     def farthest(self, others):
         f = None
         f_dist = None
@@ -49,14 +55,14 @@ class Vector(object):
                 f_dist = dist
         return f
 
+    def __repr__(self):
+        return self.__unicode__()
+
     def __unicode__(self):
         return u"{}".format(self.__str__())
 
     def __str__(self):
-        try:
-            return self.direction()
-        except:
-            return "({}, {})".format(self.x, self.y)
+        return "({}, {})".format(self.x, self.y)
 
     @property
     def key(self):

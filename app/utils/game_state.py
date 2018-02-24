@@ -7,6 +7,7 @@ class GameState(object):
     def __init__(self, data):
         self.data = data
         self._empty_squares = None
+        self._empty_squares_with_tails = None
         self._food = None
         self._snakes = None
         self._all_snakes = None
@@ -49,20 +50,29 @@ class GameState(object):
             for y in range(0, height):
                 empty_squares[(x, y)] = True
 
-        empty_squares = self._remove_solid_squares(empty_squares)
+        for p in self.me.coords:
+            v = (p.x, p.y)
+            if v in empty_squares:
+                del empty_squares[v]
+
+        for snake in self.opponents:
+            for p in snake.coords:
+                v = (p.x, p.y)
+                if v in empty_squares:
+                    del empty_squares[v]
+
         self._empty_squares = empty_squares
         return empty_squares
 
-    def _remove_solid_squares(self, empty_squares):
-        for snake in self.data["snakes"]["data"]:
-            segments = snake["body"]["data"]
-            for segment in segments:
-                x = segment["x"]
-                y = segment["y"]
-                v = (x, y)
-                if v in empty_squares:
-                    del empty_squares[v]
-        return empty_squares
+    def empty_squares_with_tails(self):
+        if self._empty_squares_with_tails is not None:
+            return self._empty_squares_with_tails
+
+        self._empty_squares_with_tails = self.empty_squares()
+        for tail in self.all_tails:
+            self._empty_squares_with_tails[(tail.x, tail.y)] = True
+
+        return self._empty_squares_with_tails
 
     def first_empty_direction(self, start, options, default=up):
         for v in options:
@@ -70,8 +80,11 @@ class GameState(object):
                 return v
         return default
 
-    def is_empty(self, v):
-        return (v.x, v.y) in self.empty_squares()
+    def is_empty(self, v, tails_are_empty=True):
+        p = (v.x, v.y)
+        if tails_are_empty:
+            return p in self.empty_squares_with_tails()
+        return p in self.empty_squares()
 
     @property
     def possible_kill_coords(self):
@@ -98,7 +111,7 @@ class GameState(object):
     @property
     def all_tails(self):
         all_tails = [self.me.tail]
-        for s in self.all_snakes:
+        for s in self.opponents:
             all_tails.append(s.tail)
         return all_tails
 
@@ -111,11 +124,14 @@ class GameState(object):
             p, dist = to_visit.pop()
             if p.key in visited:
                 continue
+
+            if not self.is_empty(p, tails_are_empty=False) and start.is_neighbour(p):
+                continue
             visited[p.key] = dist
 
             if p in unreached_goals:
                 path = self._path(p, start, visited)
-                reached_goals.append((p, dist, path))
+                reached_goals.append((p, len(path), path))
                 unreached_goals.remove(p)
 
             for n in p.neighbours():
@@ -138,11 +154,12 @@ class GameState(object):
             for n in current_position.neighbours():
                 d = visited.get(n.key)
                 if d is not None and d < current_distance:
+                    print "%s is closer %s" % (n, d)
                     path.append(n)
                     current_position = n
                     current_distance = d
                     break
-        path.append(finish)
+        path.reverse()
         return path
 
     @property
