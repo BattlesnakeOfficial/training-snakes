@@ -136,7 +136,6 @@ class GameState(object):
         path = [start]
         current_position = start
         current_distance = visited[start.key]
-        i = 0
         while not current_position == finish:
             for n in current_position.neighbours():
                 d = visited.get(n.key)
@@ -145,9 +144,7 @@ class GameState(object):
                     current_position = n
                     current_distance = d
                     break
-            i += 1
-            if i>10:
-                return []
+        path.append(finish)
         return path
 
     @property
