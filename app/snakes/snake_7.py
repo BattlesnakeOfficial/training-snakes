@@ -5,7 +5,7 @@ from snake_6 import SimpleSometimesHungrySnake
 
 class AttemptKillsSnake(BaseSnake):
 
-    THRESHOLD = 30
+    HUNGER_THRESHOLD = 30
 
     def move(self, gamestate):
 

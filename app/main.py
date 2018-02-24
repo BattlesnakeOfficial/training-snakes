@@ -21,8 +21,8 @@ def start(snake_name):
     return json.dumps({
         'name': snake.name(),
         'color': get_random_color(snake_name),
-        'head_url': snake.head_url(),
-        'taunt': snake.taunt()
+        'head_url': "https://www.placecage.com/50/50",
+        'taunt': "hello"
     })
 
 
@@ -33,7 +33,7 @@ def move(snake_name):
     gamestate = snake.payload_to_game_state(data)
     move = snake.move(gamestate)
     if move is None:
-        return json.dumps({"move": "up"})
+        return json.dumps({"move": "up", 'taunt': "hello"})
 
     if type(move) is tuple:
         move, taunt = move
@@ -43,6 +43,7 @@ def move(snake_name):
         })
 
     return json.dumps({
+        'taunt': "hello",
         "move": move.direction()
     })
 

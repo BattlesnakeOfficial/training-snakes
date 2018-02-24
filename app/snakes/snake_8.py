@@ -1,27 +1,41 @@
-import random
 from base_snake import BaseSnake
-from snake_7 import AttemptKillsSnake
+from utils.vector import up, down, left, right
 
 
 class TailChaser(BaseSnake):
 
-    THRESHOLD = 30
-
     def move(self, gamestate):
+        options = [
+            (self.orthogonal_eat, "simple eat"),
+            (self.possible_kill, "possible kill"),
+            (self.chase_tail, "tail"),
+            (lambda gs: up, "up"),
+            (lambda gs: down, "down"),
+            (lambda gs: left, "left"),
+            (lambda gs: right, "right"),
+        ]
 
-        if len(gamestate.possible_kill_coords) > 0:
-            goal = random.choice(gamestate.possible_kill_coords)
-            return goal - gamestate.me.head, "kill?"
+        for f, taunt in options:
+            desired_move = f(gamestate)
+            if not self.bad_move(desired_move, taunt, gamestate):
+                print "good: %s, %s" % (desired_move, taunt)
+                return desired_move, taunt
 
-        if gamestate.me.health < self.THRESHOLD:
-            return AttemptKillsSnake().move(gamestate), "hungry"
+        print "dead"
+        return "dead"
 
-        visitable_tails = gamestate.best_paths_to(gamestate.me.head, gamestate.all_tails)
-        if len(visitable_tails) > 0:
-            closest_goal = visitable_tails[0]
-            (goal, distance_from_start, path) = closest_goal
-            m = path[1] - gamestate.me.head
-            return m, "tail"
+    def bad_move(self, move, desc, gs):
+        if move is None:
+            print "bad: is None, %s" % desc
+            return True
+        coord = gs.me.head + move
+        if not gs.is_empty(coord):
+            print "bad: is solid, %s" % desc
+            return True
+        if coord in gs.possible_death_coords:
+            print "bad: could be eaten, %s" % desc
+            return True
+        return False
 
     def name(self):
         return "Training Snake 8"

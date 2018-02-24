@@ -5,7 +5,7 @@ from snake_5 import SimpleHungrySnake
 
 class SimpleSometimesHungrySnake(BaseSnake):
 
-    THRESHOLD = 30
+    HUNGER_THRESHOLD = 30
 
     def move(self, gamestate):
         if gamestate.me.health < self.THRESHOLD:

@@ -17,7 +17,6 @@ class Vector(object):
                 (-1, 0): "left",
             }[(self.x, self.y)]
         except Exception as e:
-            print e
             return "up"
 
     @property

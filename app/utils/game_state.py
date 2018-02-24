@@ -64,27 +64,14 @@ class GameState(object):
         self._empty_squares = empty_squares
         return empty_squares
 
-    def empty_squares_with_tails(self):
-        if self._empty_squares_with_tails is not None:
-            return self._empty_squares_with_tails
-
-        self._empty_squares_with_tails = self.empty_squares()
-        for tail in self.all_tails:
-            self._empty_squares_with_tails[(tail.x, tail.y)] = True
-
-        return self._empty_squares_with_tails
-
     def first_empty_direction(self, start, options, default=up):
         for v in options:
             if self.is_empty(start + v):
                 return v
         return default
 
-    def is_empty(self, v, tails_are_empty=True):
-        p = (v.x, v.y)
-        if tails_are_empty:
-            return p in self.empty_squares_with_tails()
-        return p in self.empty_squares()
+    def is_empty(self, v):
+        return (v.x, v.y) in self.empty_squares()
 
     @property
     def possible_kill_coords(self):
@@ -102,8 +89,8 @@ class GameState(object):
         death_coords = []
         for snake in self.opponents:
             if snake.length > self.me.length:
-                for my_neighbour in self.me.head.neighbours:
-                    for their_neighbour in snake.head.neighbours:
+                for my_neighbour in self.me.head.neighbours():
+                    for their_neighbour in snake.head.neighbours():
                         if my_neighbour == their_neighbour:
                             death_coords.append(my_neighbour)
         return death_coords
@@ -115,51 +102,88 @@ class GameState(object):
             all_tails.append(s.tail)
         return all_tails
 
-    def best_paths_to(self, start, goals):
-        reached_goals = []
-        unreached_goals = goals
-        visited = {}
-        to_visit = [(start, 0)]
-        while len(to_visit) > 0 and len(unreached_goals) > 0:
-            p, dist = to_visit.pop()
-            if p.key in visited:
+    def travel_times(self, start):
+        shortest_travel_times = {start.key: 0}
+
+        to_visit = [(n, 1) for n in start.neighbours()]
+        while len(to_visit) > 0:
+            (curr, turns) = to_visit.pop(len(to_visit)-1)
+
+            if not self.is_empty(curr):
                 continue
 
-            if not self.is_empty(p, tails_are_empty=False) and start.is_neighbour(p):
+            shortest_travel_times[curr.key] = min(
+                shortest_travel_times.get(curr.key, turns),
+                turns
+            )
+
+            for next in curr.neighbours():
+                if self.is_empty(next):
+                    to_visit.append((next, turns+1))
+            print len(to_visit)
+
+        return shortest_travel_times
+
+    def best_paths_to(self, start, goals, allow_length_1=False):
+        travel_times = self.travel_times(start)
+
+        best_paths = []
+        for goal in goals:
+            path = self._path(start, goal, travel_times, allow_length_1)
+            if path:
+                best_paths.append((goal, len(path), path))
+
+        best_paths = sorted(best_paths, key=lambda tup: tup[1])
+        return best_paths
+
+    def _path(self, start, finish, travel_times, allow_length_1):
+
+        starting_distances = []
+        for n in finish.neighbours():
+            if not allow_length_1 and n == start:
                 continue
-            visited[p.key] = dist
+            if n.key in travel_times:
+                starting_distances.append((n, travel_times[n.key]))
 
-            if p in unreached_goals:
-                path = self._path(p, start, visited)
-                reached_goals.append((p, len(path), path))
-                unreached_goals.remove(p)
+        if len(starting_distances) == 0:
+            return
+        starting_distances = sorted(starting_distances, key=lambda tup: tup[1])
+        closest_start, closest_dist = starting_distances[0]
 
-            for n in p.neighbours():
-                if self.is_empty(n):
-                    to_visit.append((n, dist + 1))
+        path = [finish, closest_start]
+        curr = closest_start
+        dist = closest_dist
+        i = 0
+        while curr != start:
+            i += 1
+            if dist == 1:
+                break
+            for n in curr.neighbours():
+                next_dist = travel_times.get(n.key, dist)
+                if next_dist <= dist:
+                    path.append(n)
+                    curr = n
+                    dist = next_dist
+                    break
+        path.reverse()
+        return path
 
-        reached_goals = sorted(reached_goals, key=lambda tup: tup[1])
-        return reached_goals
 
     def worst_path_to(self, start, goal):
         # pick furthest choice from goal
         # that can still visit the goal
         pass
 
-    def _path(self, start, finish, visited):
-        path = [start]
-        current_position = start
-        current_distance = visited[start.key]
-        while not current_position == finish:
-            for n in current_position.neighbours():
-                d = visited.get(n.key)
-                if d is not None and d < current_distance:
-                    path.append(n)
-                    current_position = n
-                    current_distance = d
-                    break
-        path.reverse()
-        return path
+    def on_board(self, v):
+        if v.x < 0:
+            return False
+        if v.x >= self.board_width:
+            return False
+        if v.y < 0:
+            return False
+        if v.y >= self.board_height:
+            return False
+        return True
 
     @property
     def me(self):
@@ -186,6 +210,10 @@ class GameState(object):
     @property
     def board_height(self):
         return self.data["height"]
+
+    @property
+    def turn(self):
+        return self.data["turn"]
 
     @property
     def food(self):
