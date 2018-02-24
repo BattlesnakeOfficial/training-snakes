@@ -13,13 +13,13 @@ class TailChaser(BaseSnake):
             goal = random.choice(gamestate.possible_kill_coords)
             return goal - gamestate.me.head
 
-        visitable_tails = gamestate.distance_to(gamestate.me.head, gamestate.all_tails)
+        visitable_tails = gamestate.best_paths_to(gamestate.me.head, gamestate.all_tails)
         if len(visitable_tails) == 0 or gamestate.me.health < self.THRESHOLD:
             return AttemptKillsSnake().move(gamestate)
 
         closest_goal = visitable_tails[0]
         (goal, distance_from_start, path) = closest_goal
-        return gamestate.me.head - path[0]
+        return path[1] - gamestate.me.head
 
     def name(self):
         return "Training Snake 8"

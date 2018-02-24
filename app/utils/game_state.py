@@ -102,8 +102,7 @@ class GameState(object):
             all_tails.append(s.tail)
         return all_tails
 
-    # returns a list of tuples (goal, distance_from_start, path)
-    def distance_to(self, start, goals):
+    def best_paths_to(self, start, goals):
         reached_goals = []
         unreached_goals = goals
         visited = {}
@@ -125,6 +124,11 @@ class GameState(object):
 
         reached_goals = sorted(reached_goals, key=lambda tup: tup[1])
         return reached_goals
+
+    def worst_path_to(self, start, goal):
+        # pick furthest choice from goal
+        # that can still visit the goal
+        pass
 
     def _path(self, start, finish, visited):
         path = [start]
