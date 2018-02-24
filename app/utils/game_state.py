@@ -107,20 +107,22 @@ class GameState(object):
 
         to_visit = [(n, 1) for n in start.neighbours()]
         while len(to_visit) > 0:
-            (curr, turns) = to_visit.pop(len(to_visit)-1)
+            (curr, turns) = to_visit.pop(0)
 
             if not self.is_empty(curr):
                 continue
 
+            already_hit = curr.key in shortest_travel_times
             shortest_travel_times[curr.key] = min(
                 shortest_travel_times.get(curr.key, turns),
                 turns
             )
+            if already_hit:
+                continue
 
             for next in curr.neighbours():
                 if self.is_empty(next):
                     to_visit.append((next, turns+1))
-            print len(to_visit)
 
         return shortest_travel_times
 
