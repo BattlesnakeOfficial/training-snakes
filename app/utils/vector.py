@@ -83,6 +83,9 @@ class Vector(object):
             return False
         return True
 
+    def __ne__(self, other):
+        return not self == other
+
 
 up = Vector(0, -1)
 down = Vector(0, 1)

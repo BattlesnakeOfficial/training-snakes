@@ -72,6 +72,9 @@ def test_distance_to_multiple():
         (V(0, 2), 3, [V(0, 0), V(0, 1), V(0, 2)]),
     ]
 
+def test_safe_tails():
+    gs = build_test_gamestate(1, 2, me=[(0, 1), (0, 0), (0, 0)], opponents=[[(2, 1), (2, 0)], [(3, 1), (3, 0), (3, 0)]])
+    assert gs.safe_tails == [V(2, 0)]
 
 
 def test_distance_to_turn_around():

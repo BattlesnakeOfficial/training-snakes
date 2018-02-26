@@ -27,6 +27,10 @@ class Snake(object):
         return self.coords[self.length-1]
 
     @property
+    def tail_neck(self):
+        return self.coords[self.length-2]
+
+    @property
     def current_direction(self):
         return self.head - self.neck
 

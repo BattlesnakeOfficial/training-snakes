@@ -97,7 +97,7 @@ class GameState(object):
     def safe_tails(self):
         safe_tails = []
         for snake in self.all_snakes:
-            if snake.tail != snake.coords[-2]:
+            if snake.tail != snake.tail_neck:
                 safe_tails.append(snake.tail)
         return safe_tails
 
