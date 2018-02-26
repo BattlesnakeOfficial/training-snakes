@@ -4,7 +4,7 @@ from utils.vector import directions
 
 class OrthogonalDistances(BaseDistances):
 
-    def closest_to(self, goals, start):
+    def closest_to(self, start, goals, gamestate):
         if len(goals) == 0:
             return None
 

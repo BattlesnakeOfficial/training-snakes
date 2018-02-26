@@ -94,12 +94,6 @@ class GameState(object):
         return death_coords
 
     @property
-    def all_snakes(self):
-        yield self.me
-        for snake in self.opponents:
-            yield snake
-
-    @property
     def safe_tails(self):
         safe_tails = []
         for snake in self.all_snakes:
@@ -185,7 +179,6 @@ class GameState(object):
 
         path.reverse()
         return path
-
 
     def worst_path_to(self, start, goal):
         # pick furthest choice from goal

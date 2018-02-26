@@ -1,5 +1,6 @@
 import random
 # from snake_10 import Snake10
+from snake_9 import TailChaser2
 from snake_8 import TailChaser
 from snake_7 import AttemptKillsSnake
 from snake_6 import SimpleSometimesHungrySnake
@@ -22,6 +23,7 @@ SNAKE_CLASSES = [
     SimpleSometimesHungrySnake,
     AttemptKillsSnake,
     TailChaser,
+    TailChaser2,
 ]
 
 

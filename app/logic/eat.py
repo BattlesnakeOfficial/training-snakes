@@ -6,14 +6,14 @@ class Eat(object):
     def is_hungry(self, gamestate):
         return gamestate.me.health < self.HUNGER_THRESHOLD
 
-    def eat(self, gamestate):
-        if self.is_hungry(gamestate):
-            closest_food = self.closest_to(gamestate.food, gamestate.me.head)
+    def eat(self, gs):
+        if self.is_hungry(gs):
+            closest_food = self.closest_to(gs.me.head, gs.food, gs)
             if closest_food is None:
                 return None
 
-            return gamestate.first_empty_direction(
-                gamestate.me.head,
-                self.directions_to(closest_food, gamestate),
+            return gs.first_empty_direction(
+                gs.me.head,
+                self.directions_to(closest_food, gs),
                 None
             )
