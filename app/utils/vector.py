@@ -9,15 +9,12 @@ class Vector(object):
         self._mag = None
 
     def direction(self):
-        try:
-            return {
-                (0, -1): "up",
-                (0, 1): "down",
-                (1, 0): "right",
-                (-1, 0): "left",
-            }[(self.x, self.y)]
-        except Exception as e:
-            return "up"
+        return {
+            (0, -1): "up",
+            (0, 1): "down",
+            (1, 0): "right",
+            (-1, 0): "left",
+        }.get((self.x, self.y))
 
     @property
     def magnitude(self):
@@ -92,3 +89,4 @@ down = Vector(0, 1)
 right = Vector(1, 0)
 left = Vector(-1, 0)
 noop = Vector(0, 0)
+directions = [up, down, left, right]

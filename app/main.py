@@ -1,6 +1,6 @@
 import flask
 import json
-from snakes import get_snake, get_random_color
+from snakes import get_snake
 
 app = flask.Flask(__name__)
 
@@ -20,7 +20,7 @@ def start(snake_name):
 
     return json.dumps({
         'name': snake.name(),
-        'color': get_random_color(snake_name),
+        'color': snake.color(),
         'head_url': "https://www.placecage.com/50/50",
         'taunt': "hello"
     })

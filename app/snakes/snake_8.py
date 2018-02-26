@@ -1,12 +1,14 @@
 from base_snake import BaseSnake
 from utils.vector import up, down, left, right
+from logic import BadMoves, ChaiseTail, Eat, Kill, OrthogonalDistances
 
 
-class TailChaser(BaseSnake):
+class TailChaser(BaseSnake, BadMoves, ChaiseTail, Eat, Kill, OrthogonalDistances):
+    DIFFICULTY = 8
 
     def move(self, gamestate):
         options = [
-            (self.orthogonal_eat, "simple eat"),
+            (self.eat, "simple eat"),
             (self.possible_kill, "possible kill"),
             (self.chase_tail, "tail"),
             (lambda gs: up, "up"),
@@ -21,18 +23,3 @@ class TailChaser(BaseSnake):
                 return desired_move, taunt
 
         return down
-
-    def name(self):
-        return "Training Snake 8"
-
-    def color(self):
-        return "#05f299"
-
-    def head_url(self):
-        return ""
-
-    def taunt(self):
-        return ""
-
-    def end(self):
-        pass

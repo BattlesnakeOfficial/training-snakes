@@ -10,24 +10,29 @@ from snake_2 import Snake2
 from snake_1 import Snake1
 from snake_0 import Snake0
 
-_snakes = {
-    "snake_0": Snake0(),
-    "snake_1": Snake1(),
-    "snake_2": Snake2(),
-    "snake_3": Snake3(),
-    "snake_4": ScaredSnake(),
-    "snake_5": SimpleHungrySnake(),
-    "snake_6": SimpleSometimesHungrySnake(),
-    "snake_7": AttemptKillsSnake(),
-    "snake_8": TailChaser(),
-    # "bambora": Snake10(),
-}
+_snakes = None
+
+SNAKE_CLASSES = [
+    Snake0,
+    Snake1,
+    Snake2,
+    Snake3,
+    ScaredSnake,
+    SimpleHungrySnake,
+    SimpleSometimesHungrySnake,
+    AttemptKillsSnake,
+    TailChaser,
+]
 
 
 def get_snake(snake_name):
+    global _snakes
+
+    if _snakes is None:
+        _snakes = {}
+        for snake_class in SNAKE_CLASSES:
+            snake = snake_class()
+            name = "snake_%d" % snake.DIFFICULTY
+            _snakes[name] = snake
+
     return _snakes.get(snake_name, Snake1())
-
-
-def get_random_color(name):
-    r = lambda: random.randint(0, 255)
-    return '#%02X%02X%02X' % (r(), r(), r())

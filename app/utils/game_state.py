@@ -94,6 +94,20 @@ class GameState(object):
         return death_coords
 
     @property
+    def all_snakes(self):
+        yield self.me
+        for snake in self.opponents:
+            yield snake
+
+    @property
+    def safe_tails(self):
+        safe_tails = []
+        for snake in self.all_snakes:
+            if snake.tail != snake.coords[-2]:
+                safe_tails.append(snake.tail)
+        return safe_tails
+
+    @property
     def all_tails(self):
         all_tails = [self.me.tail]
         for s in self.opponents:
