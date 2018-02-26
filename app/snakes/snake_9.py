@@ -17,7 +17,6 @@ class TailChaser2(BaseSnake, BadMoves, ChaiseTail, Eat, Kill, PathDistances):
         distance_to_second_closest_food = paths[1][1]
         return gs.me.health < distance_to_second_closest_food*2
 
-
     def move(self, gamestate):
         options = [
             (self.eat, "simple eat"),
@@ -29,9 +28,26 @@ class TailChaser2(BaseSnake, BadMoves, ChaiseTail, Eat, Kill, PathDistances):
             (lambda gs: right, "right"),
         ]
 
-        for f, taunt in options:
-            desired_move = f(gamestate)
-            if not self.bad_move(desired_move, gamestate):
-                return desired_move, taunt
+        move_response = {}
 
-        return down
+        def get_move(f, name):
+            if f not in move_response:
+                move_response[name] = f(gamestate)
+            return move_response[name]
+
+        for (f, name) in options:
+            move = get_move(f, name)
+            if self.death_move(move, gamestate):
+                continue
+            if self.risky_move(move, gamestate):
+                continue
+            return move, name
+
+        for (f, name) in options:
+            move = get_move(f, name)
+            if self.risky_move(move, gamestate):
+                continue
+            return move, name
+
+        f, name = options[0]
+        return get_move(f, name)
