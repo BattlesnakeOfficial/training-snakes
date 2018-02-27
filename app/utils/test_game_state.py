@@ -1,48 +1,5 @@
-from app.utils.game_state import GameState
 from app.utils.vector import Vector as V
-
-
-def build_test_gamestate(width=3, height=3, me=[(0,0)], opponents=[], food=[]):
-
-    def _tuples_to_snake(tuples):
-        return {
-        "body": {
-          "data": _tuples_to_coords(tuples),
-          "object": "list"
-        },
-        "health": 100,
-        "id": "58a0142f-4cd7-4d35-9b17-815ec8ff8e70",
-        "length": len(tuples),
-        "name": "Sonic Snake",
-        "object": "snake",
-        "taunt": "Gotta go fast"
-      }
-
-    def _tuples_to_coords(tuples):
-        return [{
-            "object": "point",
-            "x": t[0],
-            "y": t[1]
-        } for t in tuples]
-
-    data = {
-      "food": {
-        "data": _tuples_to_coords(food),
-        "object": "list"
-      },
-      "height": height,
-      "id": 1,
-      "object": "world",
-      "snakes": {
-        "data": [_tuples_to_snake(coords) for coords in opponents],
-        "object": "list"
-      },
-      "turn": 0,
-      "width": width,
-      "you": _tuples_to_snake(me)
-    }
-    gs = GameState(data)
-    return gs
+from test import build_test_gamestate
 
 
 def test_empty():
@@ -71,6 +28,7 @@ def test_distance_to_multiple():
         (V(0, 1), 2, [V(0, 0), V(0, 1)]),
         (V(0, 2), 3, [V(0, 0), V(0, 1), V(0, 2)]),
     ]
+
 
 def test_safe_tails():
     gs = build_test_gamestate(1, 2, me=[(0, 1), (0, 0), (0, 0)], opponents=[[(2, 1), (2, 0)], [(3, 1), (3, 0), (3, 0)]])

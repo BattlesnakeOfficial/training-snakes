@@ -4,3 +4,4 @@ from eat import Eat
 from kill import Kill
 from orthogonal_distances import OrthogonalDistances
 from path_distances import PathDistances
+from increase_board_control import IncreaseBoardControl

@@ -1,5 +1,6 @@
 from vector import Vector, up, down, left, right
 from snake import Snake
+import copy
 
 
 class GameState(object):
@@ -70,6 +71,11 @@ class GameState(object):
 
     def is_empty(self, v):
         return v.key in self.empty_squares()
+
+    def is_safe(self, v):
+        if v in self.possible_death_coords:
+            return False
+        return self.is_empty(v)
 
     @property
     def possible_kill_coords(self):
@@ -231,3 +237,19 @@ class GameState(object):
         if self._food is None:
             self._food = [Vector(f["x"], f["y"]) for f in self.data["food"]["data"]]
         return self._food
+
+    def next_gamestate(self, moves):
+        next_payload = copy.copy(self.data)
+        for snake_id, direction in moves:
+            p = self.me.head + direction
+            next_coord = {"x": p.x, "y": p.y, "object": "point"}
+            if snake_id == self.me.id:
+                next_payload["you"]["body"]["data"].insert(0, next_coord)
+                del next_payload["you"]["body"]["data"][-1]
+
+            for i in range(0, len(next_payload["snakes"]["data"])):
+                if next_payload["snakes"]["data"][i]["id"] == snake_id:
+                    next_payload["snakes"]["data"][i] = next_payload["you"]
+                    break
+        return GameState(next_payload)
+

@@ -19,8 +19,8 @@ class TailChaser2(BaseSnake, BadMoves, ChaiseTail, Eat, Kill, PathDistances):
 
     def move(self, gamestate):
         options = [
-            (self.eat, "simple eat"),
-            (self.possible_kill, "possible kill"),
+            (self.eat, "eat"),
+            (self.possible_kill, "kill?"),
             (self.chase_tail, "tail"),
             (lambda gs: up, "up"),
             (lambda gs: down, "down"),
