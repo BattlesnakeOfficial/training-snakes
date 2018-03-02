@@ -18,8 +18,14 @@ class IncreaseBoardControl(object):
 
         if len(my_board_control) == 0:
             return
+        if len(my_board_control) == 1:
+            return my_board_control[0][1]
 
-        return my_board_control[1][1]
+        try:
+            return my_board_control[1][1]
+        except Exception as e:
+            print my_board_control
+            raise e
 
         # if any of those states has a boarder disappear by the time I get to it, it's infinitely good.
         ## unless... another snake's head is in there as well.

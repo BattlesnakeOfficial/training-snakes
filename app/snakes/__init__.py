@@ -1,4 +1,4 @@
-import random
+from snake_11 import SurroundSnake
 from snake_10 import ControlFreak
 from snake_9 import TailChaser2
 from snake_8 import TailChaser
@@ -25,6 +25,7 @@ SNAKE_CLASSES = [
     TailChaser,
     TailChaser2,
     ControlFreak,
+    SurroundSnake,
 ]
 
 

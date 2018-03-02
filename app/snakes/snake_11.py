@@ -1,10 +1,10 @@
 from base_snake import BaseSnake
 from utils.vector import up, down, left, right, Vector
-from logic import BadMoves, ChaiseTail, Eat, Kill, PathDistances, IncreaseBoardControl
+from logic import BadMoves, ChaiseTail, Eat, Kill, PathDistances, IncreaseBoardControl, Surround
 
 
-class ControlFreak(BaseSnake, BadMoves, ChaiseTail, Eat, Kill, PathDistances, IncreaseBoardControl):
-    DIFFICULTY = 10
+class SurroundSnake(BaseSnake, BadMoves, ChaiseTail, Eat, Kill, PathDistances, IncreaseBoardControl, Surround):
+    DIFFICULTY = 11
 
     def is_hungry(self, gs):
         paths = gs.best_paths_to(gs.me.head, gs.food)
@@ -19,7 +19,8 @@ class ControlFreak(BaseSnake, BadMoves, ChaiseTail, Eat, Kill, PathDistances, In
 
     def move(self, gamestate):
         options = [
-            (self.eat, "simple eat"),
+            (self.eat, "eat"),
+            (self.surround, "surround"),
             (self.possible_kill, "possible kill"),
             (self.increase_board_control, "control"),
             (self.chase_tail, "tail"),

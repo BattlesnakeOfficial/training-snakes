@@ -1,8 +1,9 @@
 import random
 from utils.game_state import GameState
+from logic import BadMoves
 
 
-class BaseSnake(object):
+class BaseSnake(BadMoves):
 
     HUNGER_THRESHOLD = 30
     DIFFICULTY = 8
@@ -20,3 +21,32 @@ class BaseSnake(object):
     def move(self, gamestate):
         raise NotImplemented("this should be overridden on implementations of snakes")
 
+    def end(self, details):
+        pass
+
+    def get_best_move(self, gamestate, options):
+        move_response = {}
+
+        def get_move(f, name):
+            if f not in move_response:
+                move_response[name] = f(gamestate)
+            return move_response[name]
+
+        for (f, name) in options:
+            move = get_move(f, name)
+            if move is None:
+                continue
+            if self.death_move(move, gamestate):
+                continue
+            if self.risky_move(move, gamestate):
+                continue
+            return move, name
+
+        for (f, name) in options:
+            move = get_move(f, name)
+            if self.risky_move(move, gamestate):
+                continue
+            return move, name
+
+        f, name = options[0]
+        return get_move(f, name)

@@ -51,7 +51,8 @@ def move(snake_name):
 @app.route('/<snake_name>/end', methods=['GET', 'POST'])
 def end(snake_name):
     snake = get_snake(snake_name)
-    snake.end()
+    data = flask.request.json
+    snake.end(data)
     return json.dumps({})
 
 
