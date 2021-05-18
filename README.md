@@ -80,3 +80,9 @@ To help battlesnake attendees train and verify their snakes, we'll provide a poo
 - DOS food
 - honeypot food
 - empty path, instead of shortest path
+
+--- 
+
+### Feedback
+
+* **Do you have an issue or suggestions for this repository?** Head over to our [Feedback Repository](https://play.battlesnake.com/feedback) today and let us know!
