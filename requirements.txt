@@ -1,5 +1,5 @@
 flask
 gevent==1.0.1
 greenlet==0.4.5
-gunicorn==19.2.1
+gunicorn==19.5.0
 pprint==0.1
